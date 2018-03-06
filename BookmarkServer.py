@@ -17,8 +17,6 @@
 #     that short name in its dictionary and redirects to the corresponding
 #     long URI.
 #
-# Your job in this exercise is to finish the server code.
-#
 # Here are the steps you need to complete:
 #
 # 1. Write the CheckURI function, which takes a URI and returns True if a
@@ -35,15 +33,12 @@
 # 5. Write the code inside do_POST that sends a 404 error if a URI is not
 #    successfully checked (i.e. if CheckURI returns false).
 #
-# In each step, you'll need to delete a line of code that raises the
-# NotImplementedError exception.  These are there as placeholders in the
-# starter code.
-#
-# After writing each step, restart the server and run test.py to test it.
 
 import os
 import http.server
 import requests
+import threading
+from socketserver import ThreadingMixIn
 from urllib.parse import unquote, parse_qs
 
 memory = {}
@@ -153,5 +148,5 @@ class Shortener(http.server.BaseHTTPRequestHandler):
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8000))   # Use PORT if it's there.
     server_address = ('', port)
-    httpd = http.server.HTTPServer(server_address, Shortener)
+    httpd = ThreadHTTPServer(server_address, Shortener)
     httpd.serve_forever()
